@@ -1,20 +1,25 @@
-provider "aws" {
-  region = var.aws_region
+provider "azurerm" {
+  # Configuration options
 }
 
-provider "random" {}
+provider "random" {
+  # Configuration options
+}
+
+resource "azurerm_resource_group" "rg" {
+  name     = "TFCGuideExampleResourceGroup"
+  location = var.location
+}
 
 resource "random_pet" "table_name" {}
 
-resource "aws_dynamodb_table" "tfc_example_table" {
-  name = "${var.db_table_name}-${random_pet.table_name.id}"
+resource "azurerm_cosmosdb_account" "tfc_example_account" {
+  name                 = "TFCGuideExampleAccount"
+  resource_group_name  = azurerm_resource_group.rg.name
+}
 
-  read_capacity  = var.db_read_capacity
-  write_capacity = var.db_write_capacity
-  hash_key       = "UUID"
-
-  attribute {
-    name = "UUID"
-    type = "S"
-  }
+resource "azurerm_cosmosdb_table" "tfc_example_table" {
+  name                = "${var.db_table_name}-${random_pet.table_name.id}"
+  resource_group_name = data.azurerm_cosmosdb_account.tfc_example_account.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.tfc_example_account.name
 }
