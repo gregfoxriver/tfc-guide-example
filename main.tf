@@ -23,7 +23,7 @@ resource "azurerm_cosmosdb_account" "tfc_example_account" {
   offer_type           = "Standard"
 
   capabilities {
-    name = EnableTable
+    name = "EnableTable"
   }
   
   consistency_policy {
