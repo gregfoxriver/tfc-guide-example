@@ -7,3 +7,8 @@ variable "db_table_name" {
   type    = string
   default = "terraform-learn"
 }
+
+variable "through" {
+  type = number
+  default = 400
+}
