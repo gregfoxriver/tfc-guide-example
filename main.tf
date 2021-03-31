@@ -19,8 +19,13 @@ resource "random_pet" "table_name" {}
 resource "azurerm_cosmosdb_account" "tfc_example_account" {
   name                 = "TFCGuideExampleAccount"
   resource_group_name  = azurerm_resource_group.rg.name
-  location = var.location
-  offer_type = "Standard"
+  location             = var.location
+  offer_type           = "Standard"
+
+  geo_location {
+    location          = var.location
+    failover_priority = 0
+  }
 }
 
 resource "azurerm_cosmosdb_table" "tfc_example_table" {
