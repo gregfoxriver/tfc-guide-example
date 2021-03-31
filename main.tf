@@ -17,10 +17,14 @@ resource "azurerm_resource_group" "rg" {
 resource "random_pet" "table_name" {}
 
 resource "azurerm_cosmosdb_account" "tfc_example_account" {
-  name                 = "TFCGuideExampleAccount"
+  name                 = "tfc-guideexample-account"
   resource_group_name  = azurerm_resource_group.rg.name
   location             = var.location
   offer_type           = "Standard"
+  
+  consistency_policy {
+    consistency_level = "BoundedStaleness"
+  }
 
   geo_location {
     location          = var.location
